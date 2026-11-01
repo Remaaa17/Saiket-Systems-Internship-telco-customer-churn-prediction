@@ -1,0 +1,67 @@
+
+EXECUTIVE SUMMARY: CUSTOMER CHURN PREDICTION PROJECT
+════════════════════════════════════════════════════
+
+PROJECT OVERVIEW
+────────────────
+This analysis examined 7,043 customer records to identify churn patterns
+and develop predictive models for proactive customer retention.
+
+KEY FINDINGS
+────────────
+• Current Churn Rate: 26.54%
+• Annual Customer Loss: 1,869 customers
+• Annual Revenue at Risk: $1,669,570.20
+
+HIGH-RISK SEGMENTS IDENTIFIED
+─────────────────────────────
+1. Month-to-month contract customers (Churn Rate: 42.7%)
+2. New customers (<12 months tenure)
+3. Fiber optic service customers
+4. Customers without online security services
+
+PREDICTIVE MODEL PERFORMANCE
+────────────────────────────
+Best Model: Logistic Regression
+• Accuracy: 80.41%
+• F1-Score: 0.587
+• ROC-AUC: 0.846
+
+The model can identify at-risk customers with 80.4% accuracy,
+enabling proactive intervention.
+
+BUSINESS IMPACT POTENTIAL
+─────────────────────────
+With recommended interventions:
+
+Conservative Scenario (25% churn reduction):
+• Customers Retained: 467
+• Annual Revenue Protected: $417,392.55
+
+Optimistic Scenario (40% churn reduction):
+• Customers Retained: 747
+• Annual Revenue Protected: $667,828.08
+
+RECOMMENDED ACTIONS
+───────────────────
+1. Implement ML-based early warning system (IMMEDIATE)
+2. Launch contract optimization program (IMMEDIATE)
+3. Enhance new customer onboarding (0-3 MONTHS)
+4. Review fiber optic service quality (3-6 MONTHS)
+5. Optimize pricing structure (3-6 MONTHS)
+
+EXPECTED ROI
+────────────
+Investment Required: $150,000 - $200,000
+Expected Payback Period: 6-9 months
+Year 1 Net Benefit: $300,000 - $450,000
+
+NEXT STEPS
+──────────
+1. Present findings to executive leadership
+2. Secure budget for retention initiatives
+3. Deploy predictive model to production
+4. Establish retention task force
+5. Set up monthly churn tracking dashboard
+
+Generated: 2026-10-14 02:28:02

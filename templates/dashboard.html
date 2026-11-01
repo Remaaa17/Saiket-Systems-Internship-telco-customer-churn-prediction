@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telco Churn Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Telco Customer Churn Prediction Dashboard</h1>
+                <p>Interactive Analytics Platform | Developed by Eng. Reem Osama - Saiket Systems Internship</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="showTab('eda')">EDA</button>
+            <button class="tab-btn" onclick="showTab('insights')">Business Insights</button>
+            <button class="tab-btn" onclick="showTab('models')">Model Performance</button>
+            <button class="tab-btn" onclick="showTab('features')">Feature Importance</button>
+            <button class="tab-btn" onclick="showTab('test')">Test Model</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="content">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h2>Key Business Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card blue">
+                        <div class="metric-icon"><i class="fas fa-users"></i></div>
+                        <div class="metric-value" id="totalCustomers">Loading...</div>
+                        <div class="metric-label">Total Customers</div>
+                    </div>
+                    <div class="metric-card red">
+                        <div class="metric-icon"><i class="fas fa-chart-line-down"></i></div>
+                        <div class="metric-value" id="churnRate">Loading...</div>
+                        <div class="metric-label">Churn Rate</div>
+                    </div>
+                    <div class="metric-card orange">
+                        <div class="metric-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="metric-value" id="revenueRisk">Loading...</div>
+                        <div class="metric-label">Revenue at Risk</div>
+                    </div>
+                    <div class="metric-card green">
+                        <div class="metric-icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="metric-value" id="avgRevenue">Loading...</div>
+                        <div class="metric-label">Avg Monthly Revenue</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Best Model Performance</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card purple">
+                        <div class="metric-icon"><i class="fas fa-brain"></i></div>
+                        <div class="metric-value" id="bestModel">Loading...</div>
+                        <div class="metric-label">Best Model</div>
+                    </div>
+                    <div class="metric-card teal">
+                        <div class="metric-icon"><i class="fas fa-bullseye"></i></div>
+                        <div class="metric-value" id="modelAccuracy">Loading...</div>
+                        <div class="metric-label">Accuracy</div>
+                    </div>
+                    <div class="metric-card indigo">
+                        <div class="metric-icon"><i class="fas fa-star"></i></div>
+                        <div class="metric-value" id="modelF1">Loading...</div>
+                        <div class="metric-label">F1-Score</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Potential Business Impact</h2>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h3>Conservative Scenario (25% Reduction)</h3>
+                        <div class="impact-item">
+                            <span>Customers Saved:</span>
+                            <strong id="consCustomers">Loading...</strong>
+                        </div>
+                        <div class="impact-item">
+                            <span>Revenue Protected:</span>
+                            <strong id="consRevenue">Loading...</strong>
+                        </div>
+                        <div class="impact-item">
+                            <span>Expected ROI:</span>
+                            <strong>178%</strong>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <h3>Optimistic Scenario (40% Reduction)</h3>
+                        <div class="impact-item">
+                            <span>Customers Saved:</span>
+                            <strong id="optCustomers">Loading...</strong>
+                        </div>
+                        <div class="impact-item">
+                            <span>Revenue Protected:</span>
+                            <strong id="optRevenue">Loading...</strong>
+                        </div>
+                        <div class="impact-item">
+                            <span>Expected ROI:</span>
+                            <strong>234%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EDA Tab -->
+            <div id="eda" class="tab-content">
+                <h2>Exploratory Data Analysis</h2>
+                
+                <div class="chart-container">
+                    <h3>Churn Distribution</h3>
+                    <canvas id="churnChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Contract Type vs Churn Rate</h3>
+                    <canvas id="contractChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Business Insights Tab -->
+            <div id="insights" class="tab-content">
+                <h2>Business Insights & Recommendations</h2>
+                
+                <!-- Key Findings Section -->
+                <div class="insights-section">
+                    <h3><i class="fas fa-lightbulb"></i> Key Findings from Analysis</h3>
+                    
+                    <div class="insight-cards">
+                        <div class="insight-card finding-card">
+                            <div class="insight-icon blue-icon"><i class="fas fa-file-contract"></i></div>
+                            <h4>Contract Type Impact</h4>
+                            <p class="insight-highlight">Month-to-month contracts have <strong>42.7% churn rate</strong></p>
+                            <p>Compared to one-year (11.3%) and two-year (2.8%) contracts. This is the strongest predictor of churn.</p>
+                        </div>
+
+                        <div class="insight-card finding-card">
+                            <div class="insight-icon red-icon"><i class="fas fa-wifi"></i></div>
+                            <h4>Fiber Optic Challenge</h4>
+                            <p class="insight-highlight">Fiber optic users churn at <strong>41.9%</strong></p>
+                            <p>Despite premium pricing, fiber customers show higher churn than DSL (19%), indicating service quality or pricing issues.</p>
+                        </div>
+
+                        <div class="insight-card finding-card">
+                            <div class="insight-icon orange-icon"><i class="fas fa-clock"></i></div>
+                            <h4>New Customer Risk</h4>
+                            <p class="insight-highlight">First <strong>12 months</strong> are critical</p>
+                            <p>Customers with tenure under 1 year have significantly higher churn risk, requiring focused retention efforts.</p>
+                        </div>
+
+                        <div class="insight-card finding-card">
+                            <div class="insight-icon green-icon"><i class="fas fa-credit-card"></i></div>
+                            <h4>Payment Method Effect</h4>
+                            <p class="insight-highlight">Electronic check users are <strong>2.5x</strong> more likely to churn</p>
+                            <p>Automated payment methods (credit card, bank transfer) correlate with better retention.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <div class="insights-section">
+                    <h3><i class="fas fa-chart-line"></i> Strategic Recommendations</h3>
+                    
+                    <div class="recommendations-grid">
+                        <!-- High Priority -->
+                        <div class="recommendation-group">
+                            <div class="priority-badge high-priority">HIGH PRIORITY</div>
+                            <h4>Implement in 0-3 Months</h4>
+                            
+                            <div class="recommendation-item">
+                                <div class="rec-number">1</div>
+                                <div class="rec-content">
+                                    <h5>Contract Optimization Strategy</h5>
+                                    <p><strong>Action:</strong> Offer 10-15% discount for annual contract commitments</p>
+                                    <p><strong>Target:</strong> Month-to-month customers</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 15-20% churn reduction</p>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-item">
+                                <div class="rec-number">2</div>
+                                <div class="rec-content">
+                                    <h5>New Customer Retention Program</h5>
+                                    <p><strong>Action:</strong> Implement dedicated onboarding with 3-month and 6-month check-ins</p>
+                                    <p><strong>Target:</strong> Customers with tenure under 12 months</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 10-15% first-year retention improvement</p>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-item">
+                                <div class="rec-number">3</div>
+                                <div class="rec-content">
+                                    <h5>Proactive Customer Engagement</h5>
+                                    <p><strong>Action:</strong> Deploy ML model weekly to identify at-risk customers</p>
+                                    <p><strong>Target:</strong> High-value accounts with churn risk score > 70%</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 12-18% reduction in preventable churn</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medium Priority -->
+                        <div class="recommendation-group">
+                            <div class="priority-badge medium-priority">MEDIUM PRIORITY</div>
+                            <h4>Implement in 3-6 Months</h4>
+                            
+                            <div class="recommendation-item">
+                                <div class="rec-number">4</div>
+                                <div class="rec-content">
+                                    <h5>Fiber Optic Service Improvement</h5>
+                                    <p><strong>Action:</strong> Audit service quality, improve support, add service guarantees</p>
+                                    <p><strong>Target:</strong> Fiber optic customers</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 8-12% fiber churn reduction</p>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-item">
+                                <div class="rec-number">5</div>
+                                <div class="rec-content">
+                                    <h5>Pricing Optimization</h5>
+                                    <p><strong>Action:</strong> Review pricing structure, create mid-tier packages, offer price locks</p>
+                                    <p><strong>Target:</strong> High monthly charge customers</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 5-10% churn reduction</p>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-item">
+                                <div class="rec-number">6</div>
+                                <div class="rec-content">
+                                    <h5>Security & Support Services</h5>
+                                    <p><strong>Action:</strong> Bundle basic security with all plans, offer free tech support trial</p>
+                                    <p><strong>Target:</strong> Customers without security/support services</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 7-10% churn reduction</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Low Priority -->
+                        <div class="recommendation-group">
+                            <div class="priority-badge low-priority">LOW PRIORITY</div>
+                            <h4>Implement in 6-12 Months</h4>
+                            
+                            <div class="recommendation-item">
+                                <div class="rec-number">7</div>
+                                <div class="rec-content">
+                                    <h5>Payment Method Optimization</h5>
+                                    <p><strong>Action:</strong> Incentivize automatic payment enrollment with small discounts</p>
+                                    <p><strong>Target:</strong> Electronic check users</p>
+                                    <p class="rec-impact"><i class="fas fa-arrow-up"></i> Expected Impact: 5-8% churn reduction</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Summary -->
+                <div class="insights-section">
+                    <h3><i class="fas fa-rocket"></i> Expected Business Impact</h3>
+                    
+                    <div class="impact-summary">
+                        <div class="impact-box">
+                            <div class="impact-label">Conservative Estimate</div>
+                            <div class="impact-value">25-30%</div>
+                            <div class="impact-desc">Overall Churn Reduction</div>
+                            <div class="impact-detail">
+                                <p><strong>440-530</strong> customers retained annually</p>
+                                <p><strong>$420K-$504K</strong> annual revenue protected</p>
+                            </div>
+                        </div>
+
+                        <div class="impact-box">
+                            <div class="impact-label">Optimistic Estimate</div>
+                            <div class="impact-value">35-45%</div>
+                            <div class="impact-desc">Overall Churn Reduction</div>
+                            <div class="impact-detail">
+                                <p><strong>655-840</strong> customers retained annually</p>
+                                <p><strong>$588K-$756K</strong> annual revenue protected</p>
+                            </div>
+                        </div>
+
+                        <div class="impact-box roi-box">
+                            <div class="impact-label">ROI Timeline</div>
+                            <div class="impact-value">6-9 months</div>
+                            <div class="impact-desc">Break-even Period</div>
+                            <div class="impact-detail">
+                                <p>Implementation investment recovered in <strong>6-9 months</strong></p>
+                                <p>Positive cash flow starts in <strong>Q3-Q4</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Models Tab -->
+            <div id="models" class="tab-content">
+                <h2>Model Performance Comparison</h2>
+                
+                <div class="chart-container">
+                    <h3>Model Accuracy Comparison</h3>
+                    <canvas id="modelChart"></canvas>
+                </div>
+
+                <div id="modelTable" class="table-container">
+                    <h3>Detailed Results</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Accuracy</th>
+                                <th>F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modelTableBody">
+                            <tr><td colspan="3">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Features Tab -->
+            <div id="features" class="tab-content">
+                <h2>Feature Importance Analysis</h2>
+                
+                <div class="chart-container">
+                    <h3>Top 10 Most Important Features</h3>
+                    <canvas id="featureChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Test Tab -->
+            <div id="test" class="tab-content">
+                <h2>Test Model Predictions</h2>
+                
+                <div class="test-section">
+                    <button class="test-btn" onclick="testRandomCustomer()">Test Random Customer</button>
+                    
+                    <div id="testResults" class="test-results"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Telco Churn Dashboard v1.0 | October 2024 | Developed by Eng. Reem Osama - Saiket Systems Internship</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

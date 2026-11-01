@@ -1,0 +1,14 @@
+EXPLORATORY DATA ANALYSIS - KEY INSIGHTS
+======================================================================
+
+Overall Churn Rate: 26.54%
+
+Churn Rate by Contract Type:
+  - Month-to-month: 42.71%
+  - One year: 11.27%
+  - Two year: 2.83%
+
+Churn Rate by Internet Service:
+  - DSL: 18.96%
+  - Fiber optic: 41.89%
+  - No: 7.40%
